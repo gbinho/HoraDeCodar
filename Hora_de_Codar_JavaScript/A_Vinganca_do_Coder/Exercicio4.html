@@ -1,0 +1,30 @@
+<!-- 4. Faça um programa que leia 3 valores informados pelo usuário (considere que não serão informados valores iguais) e escrever a soma dos 2 maiores. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var numero1, numero2, numero3, soma;
+
+        numero1 = prompt("Informe o primeiro número: ");
+        numero2 = prompt("Informe o segundo número: ");
+        numero3 = prompt("Informe o terceiro número: ");
+        if( numero1 < numero2 && numero1 < numero3){
+            soma = parseInt(numero2) + parseInt(numero3);
+            alert("A soma dos dois maiores números é: " + soma);
+        } else if( numero2 < numero1 && numero2 < numero3){
+            soma = parseInt(numero1) + parseInt(numero3);
+            alert("A soma dos dois maiores números é: " + soma);
+        } else{
+            soma = parseInt(numero1) + parseInt(numero2);
+            alert("A soma dos dois maiores números é: " + soma);
+        }
+    </script>
+    
+</body>
+</html>

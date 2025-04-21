@@ -1,0 +1,27 @@
+<!-- 3. Faça um programa para ler 3 valores (considere que não serão informados valores iguais) e escrever o maior deles. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var numero1, numero2, numero3
+
+        numero1 = prompt("Informe o primeiro número: ");
+        numero2 = prompt("Informe o segundo número: ");
+        numero3 = prompt("Informe o terceiro número: ");
+
+        if (numero1 > numero2 && numero1 > numero3){
+            alert("O número um: " + numero1 + " é o maior número.");
+        } else if (numero2 > numero1 && numero2 > numero3){
+            alert("O número dois: " + numero2 + " é o maior número.");
+        } else{
+            alert("O número três: " + numero3 + " é o maior número.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var numero1 = parseFloat(prompt("Informe o primeiro número:"));
+        var numero2 = parseFloat(prompt("Informe o segundo número:"));
+
+        while (numero2 <= 0) {
+            numero2 = parseFloat(prompt("número inválido. Informe um novo segundo número (maior que zero):"));
+        }
+
+        var resultado = numero1 / numero2.toFixed(2);
+        document.write("Resultado da divisão: ", resultado);
+    </script>
+</body>
+</html>

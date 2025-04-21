@@ -1,0 +1,33 @@
+<!--    6. Faça um programa que receba quatro valores informados pelo usuário, mas informe somente o primeiro, o último e o maior de todos eles (considere que todos os números informados serão diferentes)-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var numero1, numero2, numero3, numero4;
+
+        numero1 = prompt("Informe o primeiro número: ");
+        numero2 = prompt("Informe o segundo número: ");
+        numero3 = prompt("Informe o terceiro número: ");
+        numero4 = prompt("Informe o quarto número: ");
+
+        alert("O primeiro número informado foi: " + numero1);
+        alert("O último número informado foi: " + numero4);
+
+        if (numero1 > numero2 && numero1 > numero3 && numero1 > numero4){
+            alert("O maior número informado foi: " + numero1);
+        } else if (numero2 > numero1 && numero2 > numero3 && numero2 > numero4){
+            alert("O maior número informado foi: " + numero2);
+        } else if (numero3 > numero1 && numero3 > numero2 && numero3 > numero4){
+            alert("O maior número informado foi: " + numero3);
+        } else{
+            alert("O maior número informado foi: " + numero4);
+        }
+    </script>
+</body>
+</html>

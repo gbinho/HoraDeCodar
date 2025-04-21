@@ -1,0 +1,46 @@
+<!--    11. Uma micro calculadora
+Escreva um programa para ler 2 valores inteiros informados pelo usuário e uma das seguintes operações a serem executadas (codificada da seguinte forma: 1. Adição, 2. Subtração, 3. Divisão, 4. Multiplicação).
+O programa deve calcular e escrever o resultado dessa operação sobre os dois valores lidos. 
+
+Observação: Considere que só serão lidos os valores 1, 2, 3 ou 4 para as operações-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var num1, num2, operacao, resultado;
+
+        num1 = prompt("Informe o primeiro número: ");
+        num2 = prompt("Informe o segundo número: ");
+
+        operacao = prompt("Informe a operação desejada:\n[1]. Adição, \n[2]. Subtração, \n[3]. Divisão, \n[4]. Multiplicação");
+
+        switch (operacao){
+            case "1":
+                resultado = parseInt(num1) + parseInt(num2);
+                alert("O resultado da adição é: " + resultado);
+                break;
+            case "2":
+                resultado = parseInt(num1) - parseInt(num2);
+                alert("O resultado da subtração é: " + resultado);
+                break;
+            case "3":
+                resultado = parseInt(num1) / parseInt(num2);
+                alert("O resultado da divisão é: " + resultado);
+                break;
+            case "4":
+                resultado = parseInt(num1) * parseInt(num2);
+                alert("O resultado da multiplicação é: " + resultado);
+                break;
+            default:
+                alert("Operação inválida.");
+                break;
+        }
+    </script>
+</body>
+</html>

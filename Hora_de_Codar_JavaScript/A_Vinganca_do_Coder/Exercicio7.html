@@ -1,0 +1,36 @@
+<!-- 7. Faça um programa que leia 6 números que o usuário vai informar. Todos os números lidos com valor inferior a 72 devem ser somados. Escreva o valor final da soma efetuada e também todos valores que o usuário informou.     -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var soma = 0;
+        var contador = 1;
+        numeros_informados = "";
+
+        while(contador <= 6){
+            var numero  = prompt("Informe o " + contador + "º número: ");
+
+            if(contador == 1){
+                numeros_informados = numero;
+            } else{
+                numeros_informados = numeros_informados + ", " + numero;
+            }
+
+            if(numero < 72){
+                soma = soma + parseInt(numero);
+            }
+            contador++;
+        }
+
+        alert("\nSoma dos números menor que 72: " + soma);
+        alert("\nNúmeros informados: " + numeros_informados);
+    </script>
+</body>
+</html>
