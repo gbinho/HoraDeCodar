@@ -1,0 +1,574 @@
+<html>
+
+<head>
+  <script>
+    class Quarto {
+      constructor(numeroQuarto, status) {
+        this.numeroQuarto = numeroQuarto;
+        this.status = status;
+      }
+    }
+
+    class Hospede {
+      constructor(nome, valorDiaria, idade) {
+        this.nome = nome;
+        this.valorDiaria = valorDiaria;
+        this.idade = idade;
+      }
+    }
+
+
+    class Auditorio {
+      constructor(nome, lugares, espaco, status) {
+        this.nome = nome;
+        this.lugares = lugares;
+        this.espaco = espaco;
+        this.total = lugares + espaco;
+        this.status = status;
+      }
+    }
+
+    let quartos = [
+      new Quarto(1, "disponível"),
+      new Quarto(2, "disponível"),
+      new Quarto(3, "disponível"),
+      new Quarto(4, "disponível"),
+      new Quarto(5, "disponível"),
+      new Quarto(6, "disponível"),
+      new Quarto(7, "disponível"),
+      new Quarto(8, "disponível"),
+      new Quarto(9, "disponível"),
+      new Quarto(10, "disponível"),
+      new Quarto(11, "disponível"),
+      new Quarto(12, "disponível"),
+      new Quarto(13, "disponível"),
+      new Quarto(14, "disponível"),
+      new Quarto(15, "disponível"),
+      new Quarto(16, "disponível"),
+      new Quarto(17, "disponível"),
+      new Quarto(18, "disponível"),
+      new Quarto(19, "disponível"),
+      new Quarto(20, "disponível"),
+    ];
+
+    let hospedes = [];
+
+    let auditorio = [
+      new Auditorio("Laranja", 150, 70, true),
+      new Auditorio("Colorado", 350, 0, true)
+    ];
+
+    sessionStorage.setItem("validation", false);
+
+    function inicio() {
+
+      if (sessionStorage.getItem("validation") == "false") {
+        alert("Bem vindo ao Hotel SunShine!");
+
+        let nome = String(prompt("Informe seu nome:"));
+
+        sessionStorage.setItem("name", nome);
+
+        let senha = parseInt(prompt("Informe sua senha."));
+
+        while (senha != 2678) {
+          senha = parseInt(prompt("Senha incorreta! Tente novamente."));
+        }
+
+        sessionStorage.setItem("validation", true);
+      }
+
+      alert(`Bem vindo ao Hotel SunShine, ${sessionStorage.getItem("name")}. É um imenso prazer ter você por aqui!`);
+
+      let escolha = parseInt(prompt("Selecione uma opção\n \n1.) Cadastro de Hóspedes \n2.) Abastecimento de Carros \n3.) Mais opções \n4.) Auditorio \n5.) Sair"));
+
+      switch (escolha) {
+        case 1:
+          cadastro_hospedes();
+          break;
+        case 2:
+          abastecer_carros();
+          break;
+        case 3:
+          mais_opcoes();
+          break;
+        case 4:
+          cadastro_auditorio();
+          break;
+        case 5:
+          sair();
+          break;
+        default:
+          erro();
+          break;
+      }
+
+    }
+
+    function valorNegativo(valor) {
+      return valor < 0;
+    }
+
+    function quantidadeDias(dias) {
+      return dias > 30;
+    }
+
+    function cadastro_hospedes() {
+      alert("HOTEL SUNSHINE - CADASTRO DE HÓSPEDES");
+
+      let opcao = "CONTINUE";
+
+      let quantGratuidade = 0,
+        quantMeia = 0,
+        valorTotal = 0.0;
+
+      while (opcao.toUpperCase() == "CONTINUE") {
+        if (hospedes.length <= 20) {
+          let nomeHosp = String(prompt("Informe o nome do hospede:"));
+          let idade = parseInt(prompt("Informe sua idade: "));
+
+          let quantDias;
+
+          let valorDiaria = parseFloat(
+            prompt("Informe o valor padrão da diaria.")
+          );
+
+          while (valorNegativo(valorDiaria)) {
+            valorDiaria = parseFloat(
+              prompt("Informe um valor valido para a diaria.")
+            );
+          }
+
+          if (idade <= 6) {
+            alert(`${nomeHosp} possui gratuidade.`);
+            valorDiaria = 0;
+            quantGratuidade++;
+          } else if (idade >= 60) {
+            alert(`${nomeHosp} paga meia.`);
+
+            quantDias = parseInt(prompt("Informe a quantidade de dias."));
+
+            while (quantidadeDias(quantDias)) {
+              quantDias = parseInt(
+                prompt("Não é permitido mais de 30 dias! Informe um valor abaixo de 30 dias.")
+              );
+            }
+
+            valorDiaria = (valorDiaria / 2) * quantDias;
+            quantMeia++;
+            valorTotal += valorDiaria;
+          } else {
+            quantDias = parseInt(prompt("Informe a quantidade de dias."));
+
+            while (quantidadeDias(quantDias)) {
+              quantDias = parseInt(
+                prompt("Não é permitido mais de 30 dias! Informe um valor abaixo de 30 dias.")
+              );
+            }
+
+            valorDiaria *= quantDias;
+            valorTotal += valorDiaria;
+          }
+
+          let userHospede = new Hospede(nomeHosp, valorDiaria, idade);
+
+          let confirmacao = String(prompt("Confirmar cadastro: [S/N]")).toLocaleUpperCase();
+
+          while (confirmacao.toUpperCase() != "S" && confirmacao.toUpperCase() != "N") {
+            confirmacao = String(prompt("Opcao invalida, escolha entre: S ou N")).toUpperCase();
+          }
+
+          if (confirmacao == "N") {
+            inicio();
+            break;
+          }
+
+          hospedes.push(userHospede);
+
+          reserva_quartos(nomeHosp, valorDiaria);
+
+          opcao = String(prompt("Desejar continuar cadastrar mais hospede? [CONTINUE/PARE]"));
+
+          while (opcao.toUpperCase() != "CONTINUE" && opcao.toUpperCase() != "PARE") {
+            opcao = String(prompt("Opcao invalida, escolha entre: CONTINUE ou PARE")).toUpperCase();
+          }
+        } else {
+          alert("Numero de hospede chegou ao maximo.");
+          break;
+        }
+      }
+
+      alert(`Quantidade de gratuidade: ${quantGratuidade}\nQuantidade de meia-hospedagem: ${quantMeia}\nValor total: ${valorTotal}`);
+
+      inicio();
+    }
+
+    function reserva_quartos(nomeHosp, valorDiaria) {
+      let texto = "";
+
+      quartos.forEach((value) => {
+        texto += `Quarto: ${value.numeroQuarto}, Status: ${value.status} |\n`;
+      });
+
+      alert(texto);
+
+      let numeroQuarto = parseInt(prompt("Informe o numero do quarto:"));
+
+      while (numeroQuarto > 20 || numeroQuarto <= 0) {
+        numeroQuarto = parseInt(prompt("Escolha um numero menor que 20 e maior que 0:"));
+      }
+
+      while (quartos[numeroQuarto - 1].status == "ocupado") {
+        numeroQuarto = parseInt(prompt("Quarto ocupado! Escolha outro quarto."));
+      }
+
+      quartos[numeroQuarto - 1].status = "ocupado";
+
+      alert(`Quarto reservado com sucesso!\nNumero do quarto: ${numeroQuarto} \nNome do hospede: ${nomeHosp} \nValor a ser pago: ${valorDiaria}`);
+    }
+
+    function mais_opcoes() {
+      let escolha = parseInt(prompt("Selecione uma opção \n1.) Cadastrar Hóspedes \n2.) Pesquisar \n3.) Listar hospedes \n4.) Concertar Ar-Condicionado \n5.) Sair \n6.) Voltar"));
+
+      switch (escolha) {
+        case 1:
+          cadastro_hospedes();
+          break;
+        case 2:
+          pesquisar_hospede();
+          break;
+        case 3:
+          listar_hospedes();
+          break;
+        case 4:
+          ar_puro();
+          break;
+        case 5:
+          sair();
+          break;
+        case 6:
+          inicio();
+          break;
+        default:
+          erro();
+          break;
+      }
+    }
+
+    function pesquisar_hospede() {
+      alert("HOTEL SUNSHINE - PESQUISAR HOSPEDE");
+
+      let nomeHosp = String(prompt("Informe o nome do hospede:"));
+
+      let encontrado = false;
+
+      if (hospedes.length == 0) {
+        alert("Nenhum usuario cadastrado");
+      } else {
+
+        let i;
+
+        for (i = 0; i < hospedes.length; i++) {
+          if (hospedes[i].nome == nomeHosp) {
+            encontrado = true;
+            break;
+          }
+        }
+
+        if (!encontrado) {
+          alert("Hospede não foi encontrado!");
+        } else {
+          alert("Hospede encontrado com sucesso!");
+
+          alert(`Informações do hospede!\nNome do hospede: ${hospedes[i].nome} \nIdade do hospede: ${hospedes[i].idade} \nValor total a pagar: ${hospedes[i].valorDiaria}`);
+        }
+      }
+
+      mais_opcoes();
+    }
+
+    function listar_hospedes() {
+      if (hospedes.length > 0) {
+        let texto = "";
+
+        hospedes.forEach((value) => {
+          texto += `Informação do hospede!\n Nome do hospede: ${value.nome} | Idade do hospede: ${value.idade} | Valor total a pagar: ${value.valorDiaria}\n`;
+        });
+
+        alert(texto);
+      } else {
+        alert("nenhum hospede não foi encontrado!");
+      }
+
+      mais_opcoes();
+    }
+
+    function erro() {
+      alert("Por favor, selecione uma das opções.");
+      inicio();
+    }
+
+    function sair() {
+      let confirma = confirm("Você deseja sair?");
+      alert(`Muito obrigado e até logo, ${sessionStorage.getItem("name")}.`);
+      // if (confirma) {
+      // 	window.close();
+      // } else {
+      // 	inicio();
+      // }
+    }
+
+
+
+    const DATA = {
+      segunda: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      terca: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      quarta: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      quinta: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      sexta: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      sabado: [7, 8, 9, 10, 11, 12, 13, 14, 15],
+      domingo: [7, 8, 9, 10, 11, 12, 13, 14, 15]
+    }
+
+    function agenda_horario(diaEvento, horaEvento, quantHora) {
+
+      let retorno = DATA[diaEvento].indexOf(horaEvento) >= 0 ? true : false
+
+      if (retorno) {
+        let index = DATA[diaEvento].indexOf(horaEvento)
+
+        if (DATA[diaEvento][index] + quantHora > DATA[diaEvento][DATA[diaEvento].length - 1]) {
+          return;
+        }
+
+
+
+      }
+
+      return retorno
+    }
+
+    function capitalizarPrimeiraLetra(str) {
+      if (str.length === 0) return str;
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function calGarcom(quantHora, numeroConvidado) {
+
+      let quantGarco = Math.ceil(numeroConvidado / 12) + (quantHora / 2)
+
+      let precoGarcomTotal = quantGarco * (10.5 * quantHora)
+
+      return {
+        msg: `São necessários ${quantGarco} garçons. Custo: R$ ${precoGarcomTotal}`,
+        total: precoGarcomTotal,
+        quantGarco: quantGarco
+      }
+    }
+
+    function buffet(numeroConvidado) {
+      let quantCafe = (numeroConvidado * 0.2) * 0.8
+      let quantAgua = (numeroConvidado * 0.5) * 0.4
+      let quantSalgado = (numeroConvidado * 7 * 34) / 100
+
+      return {
+        msg: `O evento precisará de ${quantCafe} litros de café, ${quantAgua} litros de água, ${quantSalgado} salgados`,
+        total: quantCafe + quantAgua + quantSalgado
+      }
+    }
+
+    function cadastro_auditorio() {
+      alert("AUDITORIO SUNSHINE - CADASTRO")
+
+      let numeroConvidado = parseInt(prompt("Informe o numero de convidados"))
+
+      let objAuditorio = auditorio.find((value) => numeroConvidado <= value.total)
+
+      if (objAuditorio == undefined || !objAuditorio.status) {
+        alert("Não há auditorio disponivel")
+        inicio()
+      }
+
+      //recurso tecnico arternativo (fiquei com preguiça de pensa em um solução melhor ent, vai essa msm)
+      let rta = numeroConvidado > objAuditorio.lugares ? numeroConvidado - objAuditorio.lugares : objAuditorio.lugares - numeroConvidado
+
+      alert(`Use o auditorio ${objAuditorio.nome} (inclua mais ${rta} cadeiras)`)
+
+      let diaEvento = String(prompt("Qual o dia do seu evento?"))
+      let horaEvento = parseInt(prompt("Qual a hora do seu evento?"))
+      let quantHora = parseInt(prompt("Quantas horas de evento?"))
+
+      let resultado = agenda_horario(diaEvento.toLowerCase(), horaEvento, quantHora)
+
+      while (!resultado) {
+        alert("Auditório indisponível. Escolha outro horario.")
+
+        diaEvento = String(prompt("Qual o dia do seu evento?"))
+        horaEvento = parseInt(prompt("Qual a hora do seu evento?"))
+
+        resultado = agenda_horario(diaEvento.toLowerCase(), horaEvento)
+      }
+
+      let nomeEmpresa = String(prompt("Qual o nome da empresa?"))
+
+      alert(`Auditório reservado para ${nomeEmpresa}. ${capitalizarPrimeiraLetra(diaEvento)} às ${horaEvento}hs até as ${horaEvento + quantHora}hs.`)
+
+      let calc_Garcom = calGarcom(quantHora, numeroConvidado)
+      let calc_buffet = buffet(numeroConvidado)
+
+      alert(calc_Garcom.msg)
+      alert(calc_buffet.msg)
+
+      alert(`
+        Evento no ${objAuditorio.nome}\n
+        Nome da empresa: ${nomeEmpresa}\n
+        Data: ${capitalizarPrimeiraLetra(diaEvento)} às ${horaEvento}hs até as ${horaEvento + quantHora}hs.\n
+        Duração do evento: ${quantHora}\n
+        Quantidade de garçons: ${calc_Garcom.quantGarco}\n
+        Quantidade de Convidados: ${numeroConvidado}
+      `)
+
+      alert(`
+        Custo garçom: ${calc_Garcom.total}\n
+        Custo Buffet: ${calc_buffet.total}\n
+        Valor total do Evento: R$ ${calc_Garcom.total + calc_buffet.total}
+      `)
+
+      let opcao = String(prompt("Gostaria de efetuar a reserva? S/N"))
+
+      while (opcao.toUpperCase() != "S" && opcao.toUpperCase() != "N") {
+        opcao = String(prompt("Opcao invalida, escolha entre: S ou N")).toUpperCase();
+      }
+
+      if (opcao.toUpperCase() == "S") {
+        for (let i = 0; i <= quantHora - 1; i++) {
+          DATA[diaEvento] = DATA[diaEvento].filter(item => item !== horaEvento + i)
+        }
+        alert(`${nomeEmpresa}, reserva efetuada com sucesso.`)
+      } else {
+        alert(`${nomeEmpresa}, reserva cancelada com sucesso.`)
+      }
+
+      inicio()
+
+    }
+
+
+    function abastecer_carros() {
+      alert("HOTEL SUNSHINE - ABASTECER");
+
+      let nome = prompt("Digite o nome do cliente:");
+
+      let alcoolWayne = parseFloat(prompt("Qual o valor do álcool no posto Wayne Oil?"));
+      let gasolinaWayne = parseFloat(prompt("Qual o valor da gasolina no posto Wayne Oil?"));
+      let alcoolStark = parseFloat(prompt("Qual o valor do álcool no posto Stark Petrol?"));
+      let gasolinaStark = parseFloat(prompt("Qual o valor da gasolina no posto Stark Petrol?"));
+
+      let volumeTanque = 42;
+
+      let custoAlcoolWayne = alcoolWayne * volumeTanque;
+      let custoGasolinaWayne = gasolinaWayne * volumeTanque;
+      let custoAlcoolStark = alcoolStark * volumeTanque;
+      let custoGasolinaStark = gasolinaStark * volumeTanque;
+
+      let alcoolVantagemWayne = alcoolWayne < gasolinaWayne * 0.7;
+      let alcoolVantagemStark = alcoolStark < gasolinaStark * 0.7;
+
+      let melhorCustoWayne = alcoolVantagemWayne ? custoAlcoolWayne : custoGasolinaWayne;
+      let melhorCombustivelWayne = alcoolVantagemWayne ? "álcool" : "gasolina";
+
+      let melhorCustoStark = alcoolVantagemStark ? custoAlcoolStark : custoGasolinaStark;
+      let melhorCombustivelStark = alcoolVantagemStark ? "álcool" : "gasolina";
+
+      let posto, combustivel;
+
+      if (melhorCustoWayne <= melhorCustoStark) {
+        posto = "Wayne Oil";
+        combustivel = melhorCombustivelWayne;
+      } else {
+        posto = "Stark Petrol";
+        combustivel = melhorCombustivelStark;
+      }
+
+      alert(`${nome}, é mais barato abastecer com ${combustivel} no posto ${posto}`);
+
+      inicio();
+    }
+
+    class EmpresaAr {
+      constructor(nome, valor) {
+        this.nome = nome;
+        this.valor = valor;
+      }
+    }
+
+    let empresasArPuro = []
+
+    function coletaInfoEmpresaAr() {
+      let nomeEmpresa = String(prompt("Qual o nome da empresa?"))
+      let valorServico = parseInt(prompt("Qual o valor por aparelho?"))
+      let quantAparelho = parseInt(prompt("Qual a quantidade de aparelhos?"))
+      let porcentagem = parseFloat(prompt("Qual a porcentagem de desconto?"))
+      let numeroMinAparelho = parseInt(prompt("Qual o número mínimo de aparelhos para conseguir o desconto?"))
+
+      let valorTotal = valorServico * quantAparelho
+
+      if (quantAparelho > numeroMinAparelho) {
+        valorTotal = valorTotal - (valorTotal * (porcentagem / 100))
+      }
+
+      empresasArPuro.push(new EmpresaAr(nomeEmpresa, valorTotal))
+
+      alert(`O serviço de ${nomeEmpresa} custará R$ ${valorTotal}`)
+    }
+
+    function ar_puro() {
+
+      coletaInfoEmpresaAr()
+
+      let continuar = String(prompt("Deseja informar novos dados? (S/N)")).toUpperCase()
+
+      while (continuar != "S" && continuar != "N") {
+        continuar = String(prompt("Opção invalida, escolha entre (S/N) se deseja informar novos dados"))
+      }
+
+      while (continuar == "S") {
+        coletaInfoEmpresaAr()
+
+        continuar = String(prompt("Deseja informar novos dados? (S/N)")).toUpperCase()
+
+        while (continuar != "S" && continuar != "N") {
+          continuar = String(prompt("Opção invalida, escolha entre (S/N) se deseja informar novos dados")).toUpperCase()
+        }
+      }
+
+      if (empresasArPuro.length == 1) {
+        alert(`O serviço de ${nomeEmpresa} custará R$ ${valorTotal}`)
+      } else {
+
+        let menor = {
+          valorMenor: Infinity,
+          index: 0
+        };
+
+        empresasArPuro.forEach((value, index) => {
+          if (value.valor < menor.valorMenor) {
+            menor.valorMenor = value.valor
+            menor.index = index
+          }
+        })
+
+        alert(`O orçamento de menor valor é o ${capitalizarPrimeiraLetra([menor.index].nome)} por R$ ${menor.valorMenor}`)
+      }
+
+      mais_opcoes
+    }
+
+
+    inicio();
+  </script>
+</head>
+
+<body></body>
+
+</html>
